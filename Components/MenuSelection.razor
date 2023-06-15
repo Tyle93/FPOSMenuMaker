@@ -1,0 +1,24 @@
+@using FPOSMenuMaker.Services;
+@using Future.Models;
+@inject CurrentItemSelectionHandler _handler;
+<div style="padding: .5em">
+    <label for="menuSelect">Menu: </label>
+    <select id="menuSelect" @onchange="@((e) => setMenuName(e.Value as string))">
+        @foreach (var name in menuNames)
+        {
+            <option value="@name">@name</option>
+        }
+    </select>
+</div>
+
+@code{
+    [Parameter] public Action<string> setMenuName{get;set;}
+    private List<string> menuNames;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        menuNames = _handler.GetMenuNames();
+        setMenuName(menuNames.First());
+    }
+}

@@ -1,0 +1,67 @@
+﻿@using FPOSMenuMaker.Services;
+@inject CurrentItemSelectionHandler _handler
+
+<div class="modal-container" style="position: absolute; display:flex; flex-direction: column;background-color: white; border: 3px grey solid; width: fit-content; height: fit-content;  border-radius: .5em; box-shadow: 5px 5px 5px black; margin: auto; left:0; right: 0; bottom: 0; top: 0">
+    <div>
+        <div style="border-bottom: solid .1em black; padding: .5em">
+            <h3 >New Button Creation</h3>
+        </div>
+        <MenuSelection setMenuName=@SetMenuName></MenuSelection>
+        <div style="display: flex; justify-content: center; align-content: center; padding: .5em 0em">
+                <div>
+                    <button @onclick=@CreateButton >Save</button>
+                    <button @onclick=@CloseModal >Cancel</button>
+                </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    [CascadingParameter] IModalService modal { get; set; }
+    private string menuName;
+    private string itemName;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        itemName = _handler.currentSelection.ItemName;
+    }
+
+    private async System.Threading.Tasks.Task CloseModal()
+    {
+        await BlazoredModal.CloseAsync();
+    }
+
+    private async System.Threading.Tasks.Task CreateButton()
+    {
+        if (_handler.ItemButtonExists())
+        {
+            ModalOptions options = new ModalOptions()
+                {
+                    HideCloseButton = true,
+                    HideHeader = true,
+                    ActivateFocusTrap = true,
+                };
+            var menu = menuName;
+            var modalRef = modal.Show<ButtonCreationAlertModal>(null ,options);
+            var result = await modalRef.Result;
+            if(result.Confirmed)
+            {
+                _handler.DeleteButton();
+                _handler.CreateMenuButton(menu, itemName);
+                await BlazoredModal.CloseAsync();
+            }
+        }
+        else
+        {
+            _handler.CreateMenuButton(menuName, itemName);
+            await BlazoredModal.CloseAsync();
+        }
+    }
+
+    private void SetMenuName(string name)
+    {
+        menuName = name;
+    }
+}

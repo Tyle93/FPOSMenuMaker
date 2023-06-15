@@ -1,0 +1,39 @@
+﻿@using FPOSMenuMaker.Services;
+@using Future.Models;
+@inject CurrentItemSelectionHandler _handler;
+<div style="display: flex;flex-direction: row; justify-content: center; align-content: center; border: .1em black solid; border-radius: .25em; margin: .2em; padding: .2em; width: fit-content">
+    <div>Department: </div>
+    <select @onchange="@((e) => SetDepartmentName(e.Value! as string))"style="border-radius: .25em; margin-left: .2em">
+        <optgroup label="Deparment">
+            @foreach (var department in departments)
+            {
+                if (firstSelection)
+                {
+                    <option value="@department.DepartmentName" selected>@department.DepartmentName</option>
+                }
+                else
+                {
+                    <option value="@department.DepartmentName">@department.DepartmentName</option>
+                }
+            }
+        </optgroup>
+    </select>
+</div>
+
+
+@code {
+    [Parameter] public Func<bool> ShouldRerender { get; set; }
+    [Parameter] public Action<string> SetDepartmentName{ get; set; }
+
+    private bool firstSelection = false;
+    private List<Department> departments; 
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        departments = _handler.GetDepartments();
+        SetDepartmentName(departments.First().DepartmentName);
+    }
+
+
+}

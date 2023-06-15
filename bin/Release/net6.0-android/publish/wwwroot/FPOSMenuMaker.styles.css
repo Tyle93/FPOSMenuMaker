@@ -1,0 +1,196 @@
+@import '_content/Blazored.Modal/Blazored.Modal.bundle.scp.css';
+
+/* /Components/ItemButtonGroup.razor.rz.scp.css */
+button[b-4r0b6ypgx8]{
+    border: .1em solid black;
+    border-radius: .3em
+}
+/* /Components/ItemModField.razor.rz.scp.css */
+
+
+.ItemMod[b-39hndryv9h] {
+    display: flex;
+    flex-direction: row;
+    border: solid;
+    border-color: black;
+    border-radius: .25em;
+    border-width: .1em;
+    margin: .5em;
+    padding: .2em;
+    justify-content: center;
+    align-content: center;
+    user-select: none;
+    cursor: pointer;
+    background: rgb(34,193,195);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(45,154,253,1) 100%);
+    width: 100%;
+    white-space: nowrap;
+}
+
+    .ItemMod:hover[b-39hndryv9h] {
+        background: rgb(32,196,200);
+        background: linear-gradient(0deg, rgba(32,196,200,1) 0%, rgba(255,0,206,1) 100%);
+    }
+/* /Components/ItemPriceScheduleList.Razor.rz.scp.css */
+
+button[b-6gp5y99usk] {
+    border: .1em solid black;
+    border-radius: .3em
+}
+/* /Components/PriceLevelColumnHeading.razor.rz.scp.css */
+th.rotateHeading[b-bne8di7qab] {
+    /* Something you can count on */
+    height: 140px;
+    white-space: nowrap;
+}
+
+th.rotateHeading > div[b-bne8di7qab] {
+    transform:
+    translate(50px, 51px)
+    rotate(315deg);
+    width: 30px;
+}
+
+th.rotateHeading > div > span[b-bne8di7qab] {
+    border-bottom: 1px solid black;
+    padding: 3px 2px;
+}
+/* /Shared/MainLayout.razor.rz.scp.css */
+.page[b-azqszk86w0] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-azqszk86w0] {
+    flex: 1;
+}
+
+.sidebar[b-azqszk86w0] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-azqszk86w0] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-azqszk86w0]  a, .top-row[b-azqszk86w0]  .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+        text-decoration: none;
+    }
+
+    .top-row[b-azqszk86w0]  a:hover, .top-row[b-azqszk86w0]  .btn-link:hover {
+        text-decoration: underline;
+    }
+
+    .top-row[b-azqszk86w0]  a:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row:not(.auth)[b-azqszk86w0] {
+        display: none;
+    }
+
+    .top-row.auth[b-azqszk86w0] {
+        justify-content: space-between;
+    }
+
+    .top-row[b-azqszk86w0]  a, .top-row[b-azqszk86w0]  .btn-link {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-azqszk86w0] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-azqszk86w0] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-azqszk86w0] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row[b-azqszk86w0], article[b-azqszk86w0] {
+        padding-left: 2rem ;
+        padding-right: 1.5rem ;
+    }
+}
+/* /Shared/NavMenu.razor.rz.scp.css */
+.navbar-toggler[b-zmbh3mohlh] {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.top-row[b-zmbh3mohlh] {
+    height: 3.5rem;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.navbar-brand[b-zmbh3mohlh] {
+    font-size: 1.1rem;
+}
+
+.oi[b-zmbh3mohlh] {
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+}
+
+.nav-item[b-zmbh3mohlh] {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type[b-zmbh3mohlh] {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type[b-zmbh3mohlh] {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item[b-zmbh3mohlh]  a {
+        color: #d7d7d7;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
+
+.nav-item[b-zmbh3mohlh]  a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.nav-item[b-zmbh3mohlh]  a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler[b-zmbh3mohlh] {
+        display: none;
+    }
+
+    .collapse[b-zmbh3mohlh] {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+    }
+}

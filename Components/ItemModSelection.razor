@@ -1,0 +1,56 @@
+@using FPOSMenuMaker.Services;
+@using Future.Models;
+@inject CurrentItemSelectionHandler _handler;
+
+<select @onchange="@((e) => setName(e.Value as string))">
+
+    @foreach(var item in _handler.GetAllItemModifiers(ShowModifiers,ShowModifierGroups))
+    {
+        if(item.ItemId != _handler.currentSelection.ItemId)
+        {
+            if (firstItem)
+            {
+                <option value="@item.ItemName" selected>@item.ItemName</option>
+                setName(item.ItemName);
+                firstItem = false;
+            }
+            else
+            {
+                <option value="@item.ItemName">@item.ItemName</option>
+            }  
+        }
+    }
+</select>
+
+<div>
+    <div>
+        <input type="checkbox" checked="@ShowModifiers" id="ShowModifiers" @onchange="@((e) => ShowModifiers = (bool)e.Value)"> 
+        <label for="ShowModifiers" style="user-select: none">Show Modifiers</label>
+    </div>
+    <div>
+        <input type="checkbox" checked="@ShowModifierGroups" id="ShowModifierGroups" @onchange="@((e) => ShowModifierGroups = (bool)e.Value )">
+        <label for="ShowModifierGroups" style="user-select: none">Show Modifier Groups</label>
+    </div>
+</div>
+
+
+@code{
+    //[Parameter] public ItemModifier itemMod{ get; set; }
+    [Parameter] public Action<string> setName { get;set;}
+    private bool ShowModifiers;
+    private bool ShowModifierGroups;
+    private bool firstItem;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        ShowModifiers = false;
+        ShowModifierGroups = false;
+        firstItem = true;
+    }
+
+    //private void ModSelected(ChangeEventArgs e)
+    //{
+    //    itemMod.ModifierName = e.Value as string;
+    //}
+}

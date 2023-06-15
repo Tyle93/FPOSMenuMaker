@@ -1,0 +1,31 @@
+﻿@using FPOSMenuMaker.Services;
+@inject CurrentItemSelectionHandler _handler;
+<div style="display: flex;flex-direction: row; justify-content: space-between; align-content: center; border: .1em black solid; border-radius: .25em; margin: .2em; padding: .2em">
+    <div>Department: </div>
+    <select @onchange=UpdateDepartment style="border-radius: .25em; margin-left: .2em">
+        <optgroup label="Deparment">
+            @foreach(var department in _handler.GetDepartments()){
+                if(department.DepartmentName == _handler.currentSelection.Department)
+                {
+                    <option value="@department.DepartmentName" selected>@department.DepartmentName</option>
+                }
+                else
+                {
+                    <option value="@department.DepartmentName">@department.DepartmentName</option>
+                }
+            }
+        </optgroup>
+    </select>
+</div>
+
+
+@code {
+    [Parameter] public Func<bool> ShouldRerender{ get; set; }
+
+    private void UpdateDepartment(ChangeEventArgs e)
+    {
+        _handler.currentSelection.Department = e.Value as string;
+        _handler.SetCurrentDepartmentSelection(e.Value as string);
+        //_handler.Update();
+    }
+}

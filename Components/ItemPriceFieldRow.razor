@@ -1,0 +1,42 @@
+@using FPOSMenuMaker.Services;
+@using Future.Models;
+@inject CurrentItemSelectionHandler _handler;
+
+<tr>
+    <th style="width: fit-content;white-space:nowrap">@RowHeader</th
+        @foreach (var prop in priceProps)
+        {
+            if (prop.Name.Contains("Default") || prop.Name.Contains("Level"))
+            {
+                <ItemPriceFieldData Prop=@prop Price=@Price></ItemPriceFieldData>
+            }
+        }
+    <th style="width: fit-content; white-space: nowrap">@RowHeader</th>
+</tr>
+
+@code{
+    [Parameter] public ItemPrice? Price { get; set; } 
+    [Parameter] public string RowHeader { get; set; }
+    [Parameter] public int ScheduleIndex { get; set; }
+
+    private static System.Reflection.PropertyInfo[] priceProps = GeneratePriceFields();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (priceProps is null)
+        {
+            GeneratePriceFields();
+        }
+        if (Price is null)
+        {
+            Price = _handler.CreateNewItemPrice(ScheduleIndex);
+        }
+    }
+
+
+    private static System.Reflection.PropertyInfo[] GeneratePriceFields()
+    {
+        return typeof(ItemPrice).GetProperties();
+    }
+}

@@ -1,0 +1,36 @@
+﻿@using FPOSMenuMaker.Services;
+@using Future.Models;
+@inject CurrentItemSelectionHandler _handler;
+
+<div style="display: flex; flex-direction: row; justify-content: center">
+    <div class="ItemMod" @onclick=clicked @onclick:stopPropagation=true>
+        <div style="display:flex; justify-content:center; align-content:center; "  @onclick=clicked @onclick:stopPropagation=true>
+            @currentMod.ItemName
+        </div>
+    </div>
+    <button style="border: black solid .1em; border-radius: .3em; height: 2em; margin-top: .53em; margin-right: .5em" @onclick=@DeleteMod>
+        &times;
+    </button>
+</div>
+
+
+@code {
+    [Parameter] public Future.Models.Item currentMod {get;set;}
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _handler.Refresh(currentMod);
+    }
+    private void clicked(MouseEventArgs e)
+    {
+        _handler.SetCurrentSelection(currentMod.ItemId.ToString());
+        _handler.Update();
+    }
+
+    private void DeleteMod(MouseEventArgs e)
+    {
+        _handler.RemoveModFromSelection(currentMod.ItemName);
+        _handler.Update();
+    }
+}

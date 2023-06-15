@@ -1,0 +1,59 @@
+﻿@using FPOSMenuMaker.Services;
+@using Future.Models;
+@inject CurrentItemSelectionHandler _handler;
+
+<div class="modal-container" style="position: absolute; display:flex; flex-direction: column;background-color: white; border: 3px grey solid; width: fit-content; height: fit-content;  border-radius: .5em; box-shadow: 5px 5px 5px black; margin: auto; left:0; right: 0; bottom: 0; top: 0;">
+    <div style="display: flex; flex-direction: row; justify-content: center; border-bottom: 1px black solid; align-content: center; margin-bottom: .5em; margin-top: .3em;  padding: 0em 1em">
+        <h3 style="padding-top: .2em">New Item</h3>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: center; padding: 0em 1em">
+        <label for="itemNameField" style="font-size: 1.2em; margin-right: .2em">Item Name:</label>
+        <input type="text" id="itemNameField" @bind=@itemName />
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: center;">
+         <NewItemDepartmentSelection SetDepartmentName=@SetDepartementName></NewItemDepartmentSelection>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: center; margin-top: .3em; padding-bottom: 1em">
+        <button style="margin-right: .15em" @onclick=@CreateItem>
+            Save
+        </button>
+        <button style="margin-left: .15em" @onclick=@CloseModal>
+            Cancel
+        </button>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance instance {get; set; } = default!;
+
+    private string itemName;
+    private string departmentName;
+
+    private async System.Threading.Tasks.Task CloseModal()
+    {
+        await instance.CloseAsync(ModalResult.Ok(true));
+    }
+
+    private async System.Threading.Tasks.Task CreateItem()
+    {
+        if(itemName is not null && departmentName is not null)
+        {
+            _handler.CreateNewItem(itemName, departmentName);
+            await instance.CloseAsync(ModalResult.Ok(true));
+            _handler.Update();
+        }
+        else
+        {
+            await App.Current.MainPage.DisplayAlert("Alert","Department Name or Item Name was null.", "Ok");
+        }
+
+    }
+
+    private void SetDepartementName(string name)
+    {
+        departmentName = name;
+    }
+
+    
+
+}

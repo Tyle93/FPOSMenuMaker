@@ -1,0 +1,50 @@
+@using Future.Models;
+@using FPOSMenuMaker.Services;
+@using System.Globalization;
+@inject CurrentItemSelectionHandler _handler;
+<td style="border: .1em black solid; padding: .15em">
+    <div style="display: flex; flex-direction: row; padding: .12em">
+        <input value=@formatPrice() min="0.00" size="2" @onchange=@SetPrice  >
+    </div>
+</td>
+
+
+@code{
+
+    [Parameter] public System.Reflection.PropertyInfo Prop{ get; set; }
+    [Parameter] public ItemPrice Price { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if(Price is null)
+        {
+            
+        }
+    }
+
+    private string formatPrice()
+    {
+        if(Price is null)
+        {
+            return 0.ToString("c2");
+        }
+        var price = (int)Prop.GetValue(Price)!;
+        float newPrice = (float)price / 100f;
+        return newPrice.ToString("c2");
+    }
+
+    private void SetPrice(ChangeEventArgs e)
+    {
+        var inputValue = e.Value as string;
+        if(!float.TryParse(inputValue, NumberStyles.Currency, CultureInfo.CurrentCulture, out float result))
+        {
+            inputValue = formatPrice();
+            e.Value = inputValue;
+        }
+        var value = float.Parse(inputValue, System.Globalization.NumberStyles.Currency) * 100f;
+        Prop.SetValue(Price, (int)value);
+        _handler.Save();
+    }
+
+}

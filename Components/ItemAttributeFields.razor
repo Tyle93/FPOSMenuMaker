@@ -1,0 +1,36 @@
+﻿@using FPOSMenuMaker.Services;
+@inject CurrentItemSelectionHandler _handler;
+
+<div class="container" >
+
+    <div class="ItemField" style="display: flex;flex-direction: row; justify-content: center; align-content: center; border: .1em black solid; border-radius: .25em; margin: .2em; padding: .2em">
+        <label for="ItemName" style="display: flex; width:fit-content; white-space:nowrap; font-size: 1.15em ">Item Name:&ensp;</label>
+        <input id="ItemName" value=@_handler.currentSelection!.ItemName maxlength="32" style="display:block; width:100%" size="32" readonly="readonly" />
+    </div>
+
+    <div class="ItemField" style="display: flex;flex-direction: row; justify-content: space-between; align-content: center; border: .1em black solid; border-radius: .25em; margin: .2em; padding: .2em">
+        <label for="ItemDescription" style="display: flex; width:fit-content; white-space:nowrap; font-size: 1.15em ">Item Description:&ensp; </label>
+        <input id="ItemDescription" @bind=_handler.currentSelection.ItemDescription maxlength="30" style="display:block; width:100%" />
+    </div>
+
+    <div class="ItemField" style="display: flex;flex-direction: row; justify-content: space-between; align-content: center; border: .1em black solid; border-radius: .25em; margin: .2em; padding: .2em">
+        <label for="ReceiptDescription" style="display: flex; width:fit-content; white-space:nowrap; font-size: 1.15em ">Receipt Description:&ensp; </label>
+        <input id="ReceiptDescription" @bind=_handler.currentSelection.ReceiptDesc maxlength="20" style="display:block; width:100%" />
+    </div>
+
+    <div class="ItemField" style="display: flex;flex-direction: row; justify-content: space-between; align-content: center; border: .1em black solid; border-radius: .25em; margin: .2em; padding: .2em">
+        <label for="ItemUpc"style="display: flex; width:fit-content; white-space:nowrap; font-size: 1.15em ">UPC:&ensp; </label>
+        <input id="ItemUpc" @bind=_handler.currentSelection.Upc maxlength="32"  style="display:block; width:100%" />
+    </div>
+
+    <DepartmentSelection ShouldRerender="ShouldRender"></DepartmentSelection>
+    <ItemDefaltPriceField ShouldReRender="ShouldRender"></ItemDefaltPriceField>
+
+</div>
+
+
+@code 
+{
+    // style="display: flex; flex-direction: column ;border:solid ; border-color: black; border-radius: .5em; border-width: .1em; margin: 1em; padding: .5em; justify-content: right; width: 15vw"
+    [Parameter] public Func<bool> ShouldReRender{ get; set; }
+}

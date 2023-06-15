@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FPOSMenuMaker</name>
+    </assembly>
+    <members>
+        <member name="P:Future.Models.AdPlayListItem.MediaType">
+            <summary>
+            0=jpg,1=gif,2=mp4,3=png,4=swf
+            </summary>
+        </member>
+        <member name="P:Future.Models.Uicolumn.Name">
+            <summary>
+            A Database Column Name (Must match table)
+            </summary>
+        </member>
+        <member name="P:Future.Models.Uicolumn.Position">
+            <summary>
+            Display Order Index
+            </summary>
+        </member>
+    </members>
+</doc>

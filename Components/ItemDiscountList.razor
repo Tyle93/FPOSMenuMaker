@@ -1,0 +1,56 @@
+@using Future.Models;
+@using FPOSMenuMaker.Services;
+@inject CurrentItemSelectionHandler _handler;
+
+
+<div class="container">
+    <div style="display: flex; justify-content: center; border-bottom: solid black 1px">
+        <h3>Discounts</h3>
+    </div>
+
+    @foreach(var discount in discounts)
+    {
+        <ItemDiscountField IsSet=@IsDiscountSet discount=@discount SetDiscounts=@SetDiscounts></ItemDiscountField>
+    }
+
+</div>
+
+
+
+@code{
+    [Parameter] public Func<bool> ShouldRender { get; set; }
+    private List<Discount> discounts;
+    private byte[] discountFlags;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        discounts = _handler.GetDiscounts();
+        discountFlags = _handler.GetDiscountFlags();
+    }
+
+    private bool IsDiscountSet(int discountIndex)
+    {
+        var flagIndex = discountIndex / 8;
+        if(flagIndex < discountFlags.Length)
+        {
+            var mask = (1 << (discountIndex % 8));
+            var result = (discountFlags[flagIndex] & mask); 
+            return result == mask;
+        }
+        return false;
+    }
+
+    private void SetDiscounts(int discountIndex)
+    {
+        var flagIndex = discountIndex / 8;
+        if (flagIndex < discountFlags.Length)
+        {
+            var mask = (1 << (discountIndex % 8));
+            var newFlags = (byte)(discountFlags[flagIndex] ^ mask);
+            _handler.SetDiscountFlags(flagIndex, newFlags);
+            _handler.Save();
+            StateHasChanged();
+        }
+    }
+}

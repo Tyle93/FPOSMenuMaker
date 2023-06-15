@@ -1,0 +1,62 @@
+﻿@using FPOSMenuMaker.Services;
+@using Future.Models;
+@inject CurrentItemSelectionHandler _handler;
+
+<div style="display:flex; flex-direction: row; justify-content: space-between; margin-top: .3em; padding-bottom: .3em">
+    <div style="display:flex; flex-direction: row; justify-content: end; width: 100%; white-space: nowrap">
+        <label style="user-select: none; align-self: center" for=@id>@GetPrinterName()</label>
+        <input id=@id type="checkbox" checked=@IsSelected @onchange=@Toggle style="margin-left: .3em; margin-right: .3em" />
+    </div>
+    <div style="display:flex; flex-direction: row; width: 100%; margin-right: .3em">
+        @if (IsSelected)
+        {
+            <input type="text" maxlength="20" value=@_handler.GetPrintDescription(Printer.Number) @onchange=@UpdateDescription style="" />
+        }
+        else
+        {
+            <input type="text" maxlength="20" style="" disabled />
+        }
+    </div>
+
+
+</div>
+
+@code {
+    [Parameter] public ConfigurationDevice Printer { get; set; }
+    [Parameter] public Action<int, string> TogglePrinter { get; set; }
+    [Parameter] public bool IsSelected { get; set; }
+    private string id;
+    private string description;
+    private ItemPrinter? itemPrinter;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        id = $"printer_{Printer.Number}";
+        //_isSelected = _handler.PrinterEnabled(Printer.Number);
+        description = _handler.GetPrintDescription(Printer.Number);
+        itemPrinter = _handler.GetItemPrinter(Printer.Number);
+    }
+
+    private void UpdateDescription(ChangeEventArgs e)
+    {
+        _handler.SetPrintDescription(Printer.Number, e.Value as string);
+    }
+
+    private void Toggle()
+    {
+        TogglePrinter(Printer.Number, description);
+    }
+
+    public string GetPrinterName()
+    {
+        if(Printer.Name == "")
+        {
+            return $"Printer #{Printer.Number}";
+        }
+        else
+        {
+            return Printer.Name;
+        }
+    }
+}

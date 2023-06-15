@@ -1,0 +1,25 @@
+
+
+.ItemMod[b-39hndryv9h] {
+    display: flex;
+    flex-direction: row;
+    border: solid;
+    border-color: black;
+    border-radius: .25em;
+    border-width: .1em;
+    margin: .5em;
+    padding: .2em;
+    justify-content: center;
+    align-content: center;
+    user-select: none;
+    cursor: pointer;
+    background: rgb(34,193,195);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(45,154,253,1) 100%);
+    width: 100%;
+    white-space: nowrap;
+}
+
+    .ItemMod:hover[b-39hndryv9h] {
+        background: rgb(32,196,200);
+        background: linear-gradient(0deg, rgba(32,196,200,1) 0%, rgba(255,0,206,1) 100%);
+    }

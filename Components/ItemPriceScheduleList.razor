@@ -1,0 +1,79 @@
+@using FPOSMenuMaker.Services;
+@using Future.Models;
+@inject CurrentItemSelectionHandler _handler;
+<div  style="margin: 1em">
+    <button class="" style="margin-bottom: 1em" @onclick=@toggleMatrix>Toggle Price Matrix</button>
+    @if (matrixVisible)
+    {
+        <div class="price-table">
+            <table>
+                <tr>
+                    <td></td>
+                    @for (int i = 0; i < 30; i++)
+                    {
+                        <PriceLevelColumnHeading heading=@GetLevelName(i)></PriceLevelColumnHeading>
+                    }
+                </tr>
+                @for (int i = 0; i < 25; ++i)
+                {
+                    <ItemPriceFieldRow ScheduleIndex=@i RowHeader=@GetScheduleName(i) Price=@currentItemPrices.FirstOrDefault((price) => price.ScheduleIndex == i)></ItemPriceFieldRow>
+                }
+            </table>
+        </div>
+    }
+</div>
+
+@code {
+
+    [Parameter] public Func<bool> ShouldReRender { get; set; }
+    private List<PriceSchedule> priceScheduleInfo;
+    private List<PriceLevel> priceLevelInfo;
+    private List<ItemPrice> currentItemPrices;
+    private bool matrixVisible = false;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        currentItemPrices = _handler.GetItemPrices();
+        currentItemPrices.Sort((a, b) => a.ScheduleIndex.CompareTo(b.ScheduleIndex));
+        priceScheduleInfo = _handler.GetPriceScheduleInfo();
+        priceLevelInfo = _handler.GetPriceLevelInfo();
+    }
+
+    private string GetScheduleName(int scheduleIndex)
+    {
+        var info = priceScheduleInfo.Where(info => info.PriceScheduleIndex == scheduleIndex).ToList();
+        if (info.Any() && info.First().PriceScheduleName != "")
+        {
+            return info.ToList()[0].PriceScheduleName;
+        }
+        else
+        {
+            return $"Schedule {scheduleIndex}";
+        }
+    }
+
+    private string GetLevelName(int levelIndex)
+    {
+        var info = priceLevelInfo.Where(info => info.PriceLevelIndex == levelIndex).ToList();
+        if (info.Any() && info.First().PriceLevelName != "")
+        {
+            return info.ToList()[0].PriceLevelName;
+        }
+        else
+        {
+            return $"Level {levelIndex}";
+        }
+    }
+
+    private void toggleMatrix(MouseEventArgs e)
+    {
+        matrixVisible = !matrixVisible;
+    }
+
+    private bool CurrentItemPricesContainsIndex(int itemPriceIndex)
+    {
+        var results = currentItemPrices.Where(item => item.ScheduleIndex == itemPriceIndex);
+        return results.Any();
+    }
+}

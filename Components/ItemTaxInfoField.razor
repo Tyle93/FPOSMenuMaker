@@ -1,0 +1,36 @@
+@using Future.Models;
+
+<div style="display:flex; flex-direction: row; justify-content: space-around; border: 1px solid black; border-radius: .25em; margin: .35em 0em">
+    <span style="">#@TaxInfo.TaxIndex</span>
+    @if(TaxInfo.TaxName != "")
+    {
+        <label for="@id">@TaxInfo.TaxName</label>
+        <input type="checkbox" id=@id @onchange=@Selected checked=@IsSet>
+        <span style="margin-left: .3em">@FormatTax()%</span>
+    }  
+</div>
+
+@code{
+    [Parameter] public Tax TaxInfo { get; set; } = default!;
+    [Parameter] public Action<short> SetTaxFlag { get; set; }
+    [Parameter] public bool IsSet { get; set; }
+
+    private string id = "";
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        id = $"TaxInfo{TaxInfo.TaxIndex}";
+    }
+
+    private void Selected()
+    {
+        SetTaxFlag(TaxInfo.TaxIndex);
+    }
+
+    private string FormatTax()
+    {
+        var tax = TaxInfo.TaxPercent / 10000;
+        return tax.ToString();
+    }
+}

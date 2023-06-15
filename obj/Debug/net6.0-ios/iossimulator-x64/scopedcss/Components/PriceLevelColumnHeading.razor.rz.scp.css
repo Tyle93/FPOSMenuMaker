@@ -1,0 +1,17 @@
+th.rotateHeading[b-bne8di7qab] {
+    /* Something you can count on */
+    height: 140px;
+    white-space: nowrap;
+}
+
+th.rotateHeading > div[b-bne8di7qab] {
+    transform:
+    translate(50px, 51px)
+    rotate(315deg);
+    width: 30px;
+}
+
+th.rotateHeading > div > span[b-bne8di7qab] {
+    border-bottom: 1px solid black;
+    padding: 3px 2px;
+}

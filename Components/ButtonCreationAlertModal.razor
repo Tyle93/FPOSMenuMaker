@@ -1,0 +1,39 @@
+﻿@using FPOSMenuMaker.Services;
+@inject CurrentItemSelectionHandler _handler
+
+<div style="position: absolute; display:flex; flex-direction: column;background-color: white; border: 3px grey solid; width: fit-content; height: fit-content;  border-radius: .5em; box-shadow: 5px 5px 5px black; margin: auto; left:0; right: 0; bottom: 0; top: 0">
+    <div>
+        <div style="border-bottom: solid .1em black; padding: .5em">
+            <h3>Button Creation Alert</h3>
+        </div>
+        <div style="display: flex; justify-content: center; align-content: center; padding: .5em 0em">
+            <div>A button for this item already exists. Would you like to replace it?</div>
+        </div>
+        <div style="display: flex; justify-content: center; align-content: center; padding: .5em 0em">
+            <div>
+                <button @onclick=@Confirm>Yes</button>
+                <button @onclick=@Cancel>No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance ModalTwo { get; set; } = default!;
+    [CascadingParameter] IModalService modal { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+    }
+
+    private async System.Threading.Tasks.Task Cancel()
+    {
+        await ModalTwo.CancelAsync();
+    }
+
+    private async System.Threading.Tasks.Task Confirm()
+    {
+        await ModalTwo.CloseAsync(ModalResult.Ok());
+    }
+}

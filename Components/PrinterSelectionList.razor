@@ -1,0 +1,29 @@
+﻿@using FPOSMenuMaker.Services;
+@using Future.Models;
+@inject CurrentItemSelectionHandler _handler;
+
+<div class="container" style=" margin: 1em; width: fit-content; height: fit-content">
+    <div style="display:flex; justify-content: center; border-bottom: solid black .1em; padding: 0em 1em">
+        <h3 style="padding-top: .3em">Printers</h3>
+    </div>
+    <div style="padding-left: .3em;">
+        @foreach (var printer in printers)
+        {
+            <ItemPrinterField Printer=@printer IsSelected=@_handler.PrinterEnabled(printer.Number) TogglePrinter=@TogglePrinter></ItemPrinterField>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public Func<bool> ShouldRender { get; set; }
+    private List<ConfigurationDevice> printers;
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        printers = _handler.GetAllPrinters();
+    }
+    private void TogglePrinter(int index, string description)
+    {
+        _handler.TogglePrinter(index, description);
+    }
+}

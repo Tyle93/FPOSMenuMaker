@@ -1,0 +1,38 @@
+﻿@page "/"
+@using FPOSMenuMaker.Components;
+@inject Services.CurrentItemSelectionHandler _handler;
+
+<div style="background-color: #3A3B3C; padding: .5em 1em; display: inline-block">
+    <div style="display:flex; flex-direction: row;  align-content: center;">
+        <ItemSelection ShouldReRender="ShouldRender"></ItemSelection>
+        <ItemButtonGroup></ItemButtonGroup>
+    </div>
+</div>
+
+<div style="display:flex; flex-direction: row; flex-wrap: wrap">
+    <ItemAttributeFields ShouldReRender="ShouldRender"></ItemAttributeFields>
+    <ItemModList ShouldReRender="ShouldRender"></ItemModList>
+    <PrinterSelectionList ShouldRender=@ShouldRender></PrinterSelectionList>
+    <ItemModifierOptionsFIeld ShouldReRender="ShouldRender"></ItemModifierOptionsFIeld>
+    <ItemTaxInfoList ShouldRender=@ShouldRender></ItemTaxInfoList>
+    <ItemDiscountList ShouldRender=@ShouldRender></ItemDiscountList>
+</div>
+
+<div>
+    <ItemPriceScheduleList ShouldReRender="ShouldRender"></ItemPriceScheduleList>
+</div>
+
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _handler.SetIndex(this);
+    }
+
+    public void Update()
+    {
+        StateHasChanged();
+    }
+}

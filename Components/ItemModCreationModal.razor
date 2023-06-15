@@ -1,0 +1,56 @@
+@using FPOSMenuMaker.Services;
+@using Future.Models;
+@inject CurrentItemSelectionHandler _handler;
+
+
+<div style="position: absolute; display:flex; flex-direction: column;background-color: white; border: 3px grey solid; width: fit-content; height: fit-content;  border-radius: .5em; box-shadow: 5px 5px 5px black; margin: auto; left:0; right: 0; bottom: 0; top: 0">
+    <div style="display: flex;  justify-content: center;flex-direction: row;  align-content: center; border-bottom: 1px solid grey; ">
+        <span style="margin-left: 1em; padding: .3em 0em">New Item Modifier</span>
+    </div>
+    <div style="display:flex; justify-content: center; align-content: center; padding-top: 1em; padding: 0em 1em; padding-top: .5em">
+        <div>
+            <label style="padding-right: .3em">Items: </label>
+            <ItemModSelection setName=@SetModName></ItemModSelection>
+        </div>
+    </div>
+    <div style="display:flex; justify-content: center; align-content: center; padding-top: 1em; padding-bottom: 1em">
+        <div>
+            <button @onclick=@CreateMod >Save</button>
+            <button @onclick=@CloseModal >Cancel</button>
+        </div>
+    </div>
+</div>
+
+
+@code{
+
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    private string modName;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+    }
+
+    private void SetModName(string itemName)
+    {
+        modName = itemName;
+    }
+
+    private async System.Threading.Tasks.Task CreateMod()
+    {
+        _handler.AddModToSelection(modName);
+        await BlazoredModal.CloseAsync();
+    }
+
+    private async System.Threading.Tasks.Task CloseModal()
+    {
+        await BlazoredModal.CloseAsync();
+    }
+
+
+
+    
+}

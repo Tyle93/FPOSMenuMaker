@@ -1,0 +1,48 @@
+@using FPOSMenuMaker.Services;
+@using Future.Models;
+@inject CurrentItemSelectionHandler _handler;
+
+<div style="display: flex;flex-direction: row; justify-content: space-between; align-content: center; border: .1em black solid; border-radius: .25em; margin: .2em; padding: .2em; width: 100%">
+    <label style="display: flex; width:fit-content; white-space:nowrap; font-size: 1.15em ">Default Price: </label>
+    <div style="display: flex; justify-content: center; align-content: center">
+        <div>$</div>
+        <input @onchange=ChangePrice value=@convertPriceToFloat() type="number" min="0.00" style="display:block; width:100%" />
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public Func<bool> ShouldReRender { get; set; }
+
+    private ItemPrice currentPrice;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        currentPrice = _handler.GetDefaultPrice();
+    }
+
+    public string convertPriceToFloat()
+    {
+        int price = currentPrice.DefaultPrice;
+        float newPrice = (price / 100f);
+        return newPrice.ToString();
+    }
+
+    private void ChangePrice(ChangeEventArgs e)
+    {
+        var value = e.Value as string;
+        var parseSuccess = Double.TryParse((string)e.Value, out var result);
+        if (parseSuccess)
+        {
+            int intValue = (int)(result * 100);
+            currentPrice.DefaultPrice = intValue;
+            _handler.Update();
+        }
+        else
+        {
+            currentPrice.DefaultPrice = 0;
+        }
+
+    }
+}

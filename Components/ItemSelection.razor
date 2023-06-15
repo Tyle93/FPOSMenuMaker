@@ -1,0 +1,88 @@
+﻿@using FPOSMenuMaker.Services;
+@inject CurrentItemSelectionHandler _handler
+@using Future.Models;
+<div style="display: flex; flex-direction: column">
+    <div>
+        <label>Department: </label>
+        <select @onchange=UpdateDepartmentSelection>
+            <option value="@allDepartments">@allDepartments</option>
+            @foreach (var department in _handler.GetDepartments())
+            {
+                if (department.DepartmentName == _handler.currentDepartmentSelection.DepartmentName)
+                {
+                    <option value="@department.DepartmentName" selected>@department.DepartmentName</option>
+                }
+                else
+                {
+                    <option value="@department.DepartmentName">@department.DepartmentName</option>
+                }
+
+            }
+        </select>
+    </div>
+    <div>
+        @if (department == allDepartments)
+        {
+            <label>Item: </label>
+            <select @onchange="@((e) => UpdateItemSelection(e))">
+                @foreach (var item in _handler.GetAllItems())
+                {
+                    if (item.Upc == _handler.currentSelection.Upc)
+                    {
+                        <option value="@item.ItemId" selected>@item.ItemName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.ItemId">@item.ItemName</option>
+                    }
+                }
+            </select>
+        }
+        else
+        {
+            <label>Item: </label>
+            <select @onchange="@((e) => UpdateItemSelection(e))">
+                @foreach (var item in _handler.GetDepartmentItems(_handler.currentDepartmentSelection.DepartmentName))
+                {
+                    if (item.Upc == _handler.currentSelection.Upc)
+                    {
+                        <option value="@item.ItemId" selected>@item.ItemName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.ItemId">@item.ItemName</option>
+                    }
+                }
+                }
+            </select>
+        }
+    </div>
+</div>
+
+
+@code {
+    [Parameter] public Func<bool> ShouldReRender { get; set; }
+    private string department;
+    private const string allDepartments = "All Departments";
+    public void UpdateItemSelection(ChangeEventArgs e)
+    {
+        _handler.SetCurrentSelection((string)e.Value);
+        _handler.Update();
+    }
+
+    public void UpdateDepartmentSelection(ChangeEventArgs e)
+    {
+        department = e.Value as string;
+        var defaultItemId = _handler.GetDepartmentDefaultItem(department);
+        if (defaultItemId != Guid.Empty)
+        {
+            _handler.SetCurrentSelection(defaultItemId.ToString());
+            _handler.Update();
+        }
+        else
+        {
+            _handler.SetCurrentDepartmentSelection((string)e.Value);
+            _handler.Update();
+        }
+    }
+}

@@ -1,0 +1,18 @@
+@using Future.Models;
+
+<div style="display: flex; justify-content: space-between">
+    <span>#@discount.DiscountIndex</span>
+    <label for="@discount.DiscountId">@discount.DiscountName</label>
+    <input type="checkbox" id="@discount.DiscountId" checked=@IsSet(discount.DiscountIndex) @onchange="@UpdateDiscounts">
+</div>
+
+@code{
+    [Parameter] public Discount discount { get; set; }
+    [Parameter] public Func<int, bool> IsSet { get;set; }
+    [Parameter] public Action<int> SetDiscounts { get; set; }
+
+    private void UpdateDiscounts(ChangeEventArgs e)
+    {
+        SetDiscounts(discount.DiscountIndex);
+    }
+}

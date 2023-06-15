@@ -1,0 +1,55 @@
+﻿@using FPOSMenuMaker.Services;
+@inject CurrentItemSelectionHandler _handler;
+
+<div class="container" style=" border-radius: .7em; width: fit-content; height: fit-content; margin: 1em">
+    <div style="border-bottom: .1em solid black; display: flex; justify-content: center; align-content: center;">Modifier  Options</div>
+    <div style="padding: .5em">
+        <div>
+            <input type="checkbox" checked="@_handler.currentSelection.IsModifier" id="IsModifier" @onchange="@((e) => SetIsModifierOptions((bool)e.Value))">
+            <label for="IsModifier" style="user-select: none;">IsModifier</label>
+        </div>
+        <div>
+            <input type="checkbox" checked="@_handler.currentSelection.IsModifierGroup" id="IsModifierGroup" @onchange="@((e) => _handler.currentSelection.IsModifierGroup = (bool)e.Value )">
+            <label for="IsModifierGroup" style="user-select: none;">IsModifierGroup</label>
+        </div>
+        <div>
+            <input type="checkbox" checked="@_handler.currentSelection.UsePizzaStyle" id="UsePizzaStyle" @onchange="@((e) => _handler.currentSelection.UsePizzaStyle = (bool)e.Value )">
+            <label for="UsePizzaStyle" style="user-select: none;">UsePizzaStyle</label>
+        </div>
+        <div style="">
+            <input type="checkbox" checked="@_handler.currentSelection.UseModifierMaxSelect" id="UseModifierMaxSelect" @onchange="@((e) => _handler.currentSelection.UseModifierMaxSelect = (bool)e.Value )">
+            <label for="UseModifierMaxSelect" style="user-select: none;">UseModifierMaxSelect</label>
+            @if (_handler.currentSelection.UseModifierMaxSelect)
+            {
+                <input type="number" value="@_handler.currentSelection.ModifierMaxSelect" min="0.00" @onchange="@((e) => _handler.currentSelection.ModifierMaxSelect = Int16.Parse((e.Value as string)) )" style="margin-left: .5em; margin-bottom: .3em; ">
+            }
+            else
+            {
+                <input  style="margin-left: .5em; margin-bottom: .3em" disabled>
+            }
+        </div>
+        <div>
+            <input type="checkbox" checked="@_handler.currentSelection.UseModifierMinSelect" id="UseModifierMinSelect" @onchange="@((e) => _handler.currentSelection.UseModifierMinSelect = (bool)e.Value )">
+            <label for="UseModifierMinSelect"style="user-select: none;">UseModifierMinSelect</label>
+            @if (_handler.currentSelection.UseModifierMinSelect)
+            {
+                <input type="number" value="@_handler.currentSelection.ModifierMinSelect" min="0.00" @onchange="@((e) => _handler.currentSelection.ModifierMinSelect = Int16.Parse((e.Value as string)))" style="margin-left: .5em">
+            }
+            else
+            {
+                <input style="margin-left: .5em; margin-bottom: .3em" disabled>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Func<bool> ShouldReRender { get; set; }
+
+    private void SetIsModifierOptions(bool value)
+    {
+        _handler.currentSelection.IsModifier = value;
+        _handler.currentSelection.ModifierFollowsParent = value;
+        _handler.currentSelection.PrintAltColor = value;
+    }
+}

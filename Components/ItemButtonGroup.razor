@@ -1,0 +1,35 @@
+﻿@inject FPOSMenuMaker.Services.CurrentItemSelectionHandler _handler
+
+<div style="display: absolute; flex-direction: row; justify-content: center; margin-left: .5em; gap: 1em; ">
+    <button class="ItemButton" @onclick=@OpenItemCreationModal>New Item</button>
+    <button class="ItemButton" @onclick=@DeleteItem>Delete Item</button>
+    <button class="ItemButton" @onclick=_handler.Save>Save</button>
+    <button @onclick=@OpenButtonCreationModal>New Button</button>
+</div>
+
+@code {
+    [CascadingParameter] IModalService Modal { get; set; } = default!;
+
+    static private ModalOptions options = new ModalOptions()
+    {
+            HideCloseButton = true,
+            HideHeader = true,
+            ActivateFocusTrap = true,
+            Class = "hide-modal"
+    };
+
+    private void OpenItemCreationModal()
+    {
+        Modal.Show<ItemCreationModal>(null,options);
+    }
+
+    private void OpenButtonCreationModal()
+    {
+        Modal.Show<ButtonCreationModal>(null, options);
+    }
+
+    private void DeleteItem()
+    {
+        Modal.Show<ItemDeletionModal>(null, options);
+    }
+}
